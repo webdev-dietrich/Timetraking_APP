@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
 });
 
 require("./routes/users.routes")(app);
+require("./routes/timetraking.routes")(app);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
