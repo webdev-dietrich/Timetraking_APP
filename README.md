@@ -2,7 +2,7 @@
 
 Timetraking APP with API for demonstatration
 
-you can see a tech demo on https://timetraking.der-dittsche.de
+you can see a tech demo on https://timetracking.der-dittsche.de
 
 ## Praparation
 
