@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
+import router from '@/router'
 
 import { useTimetrackingStore } from '@/stores/timetracking'
 
@@ -59,6 +60,7 @@ export const useUserStore = defineStore('storeUsers', {
     logoutUser() {
       this.user = {}
       this.userIsLoaded = false
+      router.replace('/')
     }
   }
 })

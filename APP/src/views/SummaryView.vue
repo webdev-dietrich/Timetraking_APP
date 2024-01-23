@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <h1>Hallo {{ user.firstname }} {{ user.lastname }}</h1>
-    <div v-for="(timeEntry, index) in timetrackingStore.times" :key="index">
+   <section class="hero">
+    <div class="block mt-6">
+    <h1 class="content is-large ml-3">Hallo {{ user.firstname }} {{ user.lastname }}</h1>
+    <div class="card" v-for="(timeEntry, index) in timetrackingStore.times" :key="index">
       <template v-if="index === 0 || !isSameDate(timeEntry.tracking_start, timetrackingStore.times[index - 1].tracking_start)">
-        <p>Datum: {{ formatDate(timeEntry.tracking_start) }}</p>
-        <p>Gesamte Stunden an diesem Tag: {{ calculateTotalHoursForDay(timeEntry.tracking_start) }}</p><br>
+        <p class="card-header-title">Datum: {{ formatDate(timeEntry.tracking_start) }}</p>
+        <p class="ml-4">Gesamte Stunden an diesem Tag: {{ calculateTotalHoursForDay(timeEntry.tracking_start) }}</p><br>
       </template>
       
-      <p>
+      <p class="ml-5">
         {{ formatTime(timeEntry.tracking_start) }} - {{ timeEntry.tracking_stop ? formatTime(timeEntry.tracking_stop) : 'noch aktiv' }}
         ({{ calculateDuration(timeEntry.tracking_start, timeEntry.tracking_stop) }})
       </p>
       <hr v-if="index !== timetrackingStore.times.length - 1 && !isSameDate(timeEntry.tracking_start, timetrackingStore.times[index + 1].tracking_start)">
     </div>
   </div>
+  </section>
 </template>
 
 <script setup>

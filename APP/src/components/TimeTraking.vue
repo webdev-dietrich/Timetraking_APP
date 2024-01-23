@@ -1,21 +1,27 @@
 <template>
-  <h1>Hallo {{ userStore.user.firstname }} {{ userStore.user.lastname }}</h1>
-  <div class="proceed_box" v-if="isLastEntryOngoing || timetrackingStore.times.length === 0">
-    <div class="proceed_box_button" @click="startWork">
-      <i class='bx bx-play-circle green'></i>
-      <p class="green">Arbeitszeit starten</p>
+  <section class="hero">
+    <div class="block mt-6">
+      
+      <h1 class="content is-large ml-3">Hallo {{ userStore.user.firstname }} {{ userStore.user.lastname }}</h1>
+      <div class="box">
+        <div v-if="isLastEntryOngoing || timetrackingStore.times.length === 0">
+          <button  @click="startWork">
+            <i class='bx bx-play-circle green'></i>
+            <p class="green content is-medium">Arbeitszeit starten</p>
+          </button>
+        </div>
+        <div v-else>
+          <button  @click="endWork">
+            <i class='bx bx-stop-circle red'></i>
+            <p class="red content is-medium">Arbeitszeit beenden</p>
+          </button>
+          <p class="content is-normal">Beginn deiner Arbeitszeit: {{ startWorking }}</p>
+        </div>
+        
+      </div>
     </div>
-  </div>
-  <div v-else>
-  <div class="proceed_box">
-    <div class="proceed_box_button" @click="endWork">
-      <i class='bx bx-stop-circle stop red'></i>
-      <p class="red">Arbeitszeit beenden</p>
-    </div>
-    
-  </div>
-  <p>Beginn deiner Arbeitszeit: {{ startWorking }}</p>
-  </div>
+    <RouterLink class="button is-link" to="/summary" >Zur Zeitenübersicht</RouterLink>
+  </section>
 </template>
 
 <script setup>
@@ -39,14 +45,23 @@ const startWork = () => {
 const endWork = () => {
   const timestamp = new Date().toISOString();
   const userId = userStore.user.id;
-  const lastEntry = timetrackingStore.times[timetrackingStore.times.length - 1];
-  const entry_id = lastEntry.id;
-  timetrackingStore.updateTimeEntry(userId, entry_id, timestamp);
+  
+  if (timetrackingStore.times.length > 0) {
+    const sortedTimes = [...timetrackingStore.times].sort((a, b) => new Date(b.tracking_start) - new Date(a.tracking_start));
+    
+    const lastEntry = sortedTimes[0];
+
+    if (lastEntry.tracking_stop === null) {
+      const entryId = lastEntry.id;
+      timetrackingStore.updateTimeEntry(userId, entryId, timestamp);
+    }
+  }
 }
 
 const isLastEntryOngoing = computed(() => {
   if (timetrackingStore.times.length > 0) {
-    const lastEntry = timetrackingStore.times[timetrackingStore.times.length - 1];
+    const sortedTimes = [...timetrackingStore.times].sort((a, b) => new Date(b.tracking_start) - new Date(a.tracking_start));
+    const lastEntry = sortedTimes[0];
     return lastEntry.tracking_stop !== null;
   }
   return false;
@@ -69,33 +84,24 @@ const startWorking = computed(() => {
 </script>
 
 <style scoped>
-.proceed_box {
-  width: 50%;
-  margin: auto;
+button {
+  all: unset;
+  cursor: pointer;
   display: flex;
-  padding-block: 3rem;
-  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding-block: 2rem;
 }
 
 i {
-  font-size: 3rem;
-}
-
-.proceed_box_button {
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-}
-.proceed_box_button p {
-  margin-left: .75rem;
+  font-size: 5rem;
 }
 
 .green {
-  color: rgb(51, 212, 51);
+  color: hsl(141, 53%, 53%);
 }
 
 .red {
-  color: rgb(228, 80, 80);
+  color: hsl(348, 100%, 61%);
 }
-
 </style>
