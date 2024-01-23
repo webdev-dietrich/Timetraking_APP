@@ -6,7 +6,8 @@
       <p class="green">Arbeitszeit starten</p>
     </div>
   </div>
-  <div class="proceed_box" v-else>
+  <div v-else>
+  <div class="proceed_box">
     <div class="proceed_box_button" @click="endWork">
       <i class='bx bx-stop-circle stop red'></i>
       <p class="red">Arbeitszeit beenden</p>
@@ -14,15 +15,20 @@
     
   </div>
   <p>Beginn deiner Arbeitszeit: {{ startWorking }}</p>
+  </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/users'
 import { useTimetrackingStore } from '@/stores/timetracking'
 
 const userStore = useUserStore()
 const timetrackingStore = useTimetrackingStore()
+
+onMounted(() => {
+  timetrackingStore.getTimeEntriesByUser(userStore.user.id)
+})
 
 const startWork = () => {
   const timestamp = new Date().toISOString();

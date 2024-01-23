@@ -4,8 +4,8 @@
       <nav>
         <div class="nav_main">
           <RouterLink class="nav_element" to="/">Home</RouterLink>
-          <RouterLink v-if="userStore.userIsLoaded" class="nav_element" to="/about"
-            >About</RouterLink
+          <RouterLink v-if="userStore.userIsLoaded" class="nav_element" to="/summary"
+            >Summary</RouterLink
           >
         </div>
         <div class="nav_right">
@@ -21,16 +21,14 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from './stores/users'
 
 const userStore = useUserStore()
 
-const logout = () => {
-  userStore.logoutUser()
-}
+onMounted(() => {
+  userStore.initUser();
+})
 
-const login = () => {
-  userStore.loginUser()
-}
 </script>
