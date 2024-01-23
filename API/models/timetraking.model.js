@@ -1,89 +1,30 @@
-const db = require("../models");
-const Timetracking = db.timetracking;
+module.exports = (sequelize, Sequelize) => {
+  const Timetracking = sequelize.define('Timetracking', {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    user_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users', 
+        key: 'id',
+      },
+    },
+    tracking_start: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
+    tracking_stop: {
+      type: Sequelize.DATE,
+      defaultValue: null,
+    },
+  });
 
-const getAllTime = async (req, res) => {
-  try {
-    const allTime = await Timetracking.findAll();
-    res.json(allTime);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
+  Timetracking.belongsTo(sequelize.models.Users, { foreignKey: 'user_id' });
+
+  return Timetracking;
 };
-
-const getAllTimeByUser = async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const userTime = await Timetracking.findAll({ where: { user_id: userId } });
-    res.json(userTime);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-const getTimeByUserLastEntry = async (req, res) => {
-    const { userId } = req.params;
   
-    try {
-      const lastEntry = await Timetracking.findOne({
-        where: {
-          user_id: userId,
-          tracking_stop: null,
-        },
-        order: [['tracking_start', 'DESC']],
-      });
-  
-      res.json(lastEntry);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-    }
-  };
-
-const setTimeByUser = async (req, res) => {
-  const { userId, tracking_start } = req.body;
-
-  try {
-    const newTimeEntry = await Timetracking.create({
-      user_id: userId,
-      tracking_start,
-      tracking_stop: NULL,
-    });
-
-    res.json(newTimeEntry);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-const updateTimeByUser = async (req, res) => {
-  const { entryId, tracking_stop } = req.body;
-
-  try {
-    const timeEntry = await Timetracking.findByPk(entryId);
-
-    if (!timeEntry) {
-      res.status(404).send('Time entry not found');
-      return;
-    }
-
-    timeEntry.tracking_stop = tracking_stop;
-
-    await timeEntry.save();
-
-    res.json(timeEntry);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-module.exports = {
-  getAllTime,
-  getAllTimeByUser,
-  setTimeByUser,
-  updateTimeByUser,
-  getTimeByUserLastEntry,
-};

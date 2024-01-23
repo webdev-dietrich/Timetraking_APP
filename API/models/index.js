@@ -22,6 +22,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./users.model.js")(sequelize, Sequelize);
-db.timetraking = require("./timetraking.model.js")(sequelize, Sequelize);
+db.timetrackings = require("./timetracking.model.js")(sequelize, Sequelize);
 
 module.exports = db;

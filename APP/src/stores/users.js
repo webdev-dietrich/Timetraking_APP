@@ -1,12 +1,17 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 
+import { useTimetrackingStore } from '@/stores/timetracking'
+
+
 export const useUserStore = defineStore('storeUsers', {
   state: () => {
+    const timetrackingStore = useTimetrackingStore()
     return {
       user: {},
       users: [],
-      userIsLoaded: false
+      userIsLoaded: false,
+      timetrackingStore
     }
   },
   actions: {
@@ -19,6 +24,7 @@ export const useUserStore = defineStore('storeUsers', {
 
         this.user = response.data.user
         this.userIsLoaded = true
+        this.timetrackingStore.getTimeEntriesByUser(this.user.id);
       } catch (error) {
         console.error(error)
         throw new Error('Error during login')

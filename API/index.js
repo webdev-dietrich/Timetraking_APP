@@ -25,12 +25,12 @@ app.get('/', (req, res) => {
 });
 
 require("./routes/users.routes")(app);
-require("./routes/timetraking.routes")(app);
+require("./routes/timetracking.routes")(app);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
     const db = require("./models");
-    db.sequelize.sync()
+    db.sequelize.sync( /* { force: true } */ )
     .then(() => {
         console.log("Synced db.");
     })

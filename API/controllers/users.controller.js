@@ -64,7 +64,7 @@ const updateUser = async (req, res) => {
     }
     if (firstname) userToUpdate.firstname = firstname;
     if (lastname) userToUpdate.lastname = lastname;
-    if (is_admin) userToUpdate.is_admin = is_admin
+    if (is_admin !== undefined) userToUpdate.is_admin = is_admin;
 
     await userToUpdate.save();
 
@@ -102,4 +102,5 @@ module.exports = {
   registerUser,
   loginUser,
   logoutUser,
+  updateUser,
 };
