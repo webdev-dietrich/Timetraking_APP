@@ -20,21 +20,21 @@
 
   <form class="box mt-5" @submit.prevent="handleRegister" :class="{ is_active: !reg}">
     <div class="field">
-      <label class="label">Email</label>
+      <label class="label">Username</label>
       <div class="control">
         <input class="input" v-model="register.username" type="text" name="reg_username" id="reg_username" autocomplete="none" placeholder="username">
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Email</label>
+      <label class="label">Vorname</label>
       <div class="control">
         <input class="input" v-model="register.firstname" type="text" name="reg_firstname" id="reg_firstname" autocomplete="none" placeholder="Max">
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Email</label>
+      <label class="label">Nachname</label>
       <div class="control">
         <input class="input" v-model="register.lastname" type="text" name="reg_lastname" id="reg_lastname" autocomplete="none" placeholder="Mustermann">
       </div>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <button class="button is-primary" type="submit">Login</button>
+    <button class="button is-primary" type="submit">Registrieren</button>
   </form>
 
    <div
