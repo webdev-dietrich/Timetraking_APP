@@ -4,7 +4,7 @@ Timetraking APP with API for demonstatration
 
 you can see a tech demo on https://timetracking.der-dittsche.de
 
-## Praparation
+## Preparation
 
 1. install node
 2. install a SQL Server like mariadb or mysql and start the service
